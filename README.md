@@ -8,7 +8,7 @@
  ## Assumptions
  Currently, the models assume that the quality characteristic to track is normally distributed and that the analyst knows the parameters beforehand. Future versions may include the ability to estimate the parameters from the data and relaxing the normality assumption. 
  
- ## A simple example using an EWMA Control Model
+ ## A simple example using a Shewhart Control Model
  
  The following code block generates a set of 500 points, and it returns a dataframe with the points that are out of control and a ploted control chart. 
    
