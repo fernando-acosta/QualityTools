@@ -6,7 +6,7 @@
  It currently has two main models. The Shewhart control model and the Exponentially Weighted Moving Average control model. For both models Quality Tools help you to complete tasks such as: calculating control limits and plotting time series data. The framework modular design, was inspired by popular machine learning libraries that function using the fit and predict methods. In Quality Tools, the fit method enables you to establish your control limits and the predict method returns the points that are out of control with their respective index. 
  
  ## Assumptions
- Currently, the models assume that the quality characteristic to track is normally distributed and that the analyst knows the parameters beforehand. Future versions may include the ability of estimating the parameters from the data and relaxing the normality assumption. 
+ Currently, the models assume that the quality characteristic to track is normally distributed and that the analyst knows the parameters beforehand. Future versions may include the ability to estimate the parameters from the data and relaxing the normality assumption. 
  
  ## A simple example using an EWMA Control Model
  
@@ -16,11 +16,24 @@
    from ControlCharts import EWMAControlModel
    import numpy as np
    
-   x= np.random.normal(loc=48, scale= 0.50, size= (500,))
-   model= EWMAControlModel(l=3, lbd=0.10)
-   model.fit(10000, miu=48, sigma=0.50)
-   ooc= model.predict(x)
-   model.plot(x, ss=True)
+   # Step 1: Set the Parameters
+   size= 250
+   miu_train= 48
+   miu_test= 48.50
+   sigma= 0.50
+
+   # Step 2: Data
+   x_train= np.random.normal(loc=miu_train, scale= sigma, size= (size,))
+   x_test= np.random.normal(loc=miu_test, scale= sigma, size= (size,))
+   
+   # Step 3: Train the Model
+   model= ShewhartControlModel(k=3)
+   model.fit(miu=miu_train, sigma=sigma)
+
+   # Step 4: Analyze and Predict
+   combined_data= np.append(x_train, x_test)
+   ooc= model.predict(combined_data)
+   model.plot(combined_data)
    ```
 
 ### Results
