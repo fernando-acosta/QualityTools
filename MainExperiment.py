@@ -45,20 +45,20 @@ def MainExperimentShewhart(delta, k, miu, sigma, n, m):
 
     """
     
-    results= {'Delta': [], 'Empirical ARL': [], 'Theoretical ARL': [], 'Standard Deviation': []}
+    results= {'Delta': [], 'Empirical ARL': [], 'Theoretical ARL': [], 'Theoretical RL Stdev': []}
     model= ShewhartControlModel(k)
     ucl, lcl= model.fit(miu= miu, sigma=sigma)
     
     for d in delta:
         empirical_arl_list= []
-        standard_dev_list= []
         miu_i= miu + d*sigma
         x= np.random.normal(loc=miu_i, scale= sigma, size= (n, m))
-        theoretical_arl= 1/(1-(norm.cdf(ucl, miu_i, sigma)-norm.cdf(lcl, miu_i, sigma)))
+        power= 1-(norm.cdf(ucl, miu_i, sigma)-norm.cdf(lcl, miu_i, sigma))
+        theoretical_arl= 1/power
+        theoretical_stdev= np.sqrt((1-power)/(power**2))
         
         for i in range(m): # iterate over each run
             out_of_control= model.predict(x[:, i])
-            standard_dev_list.append(np.std(x[:, i]))
         
             try: # this part may lead to an error if there are no points out of control
                 empirical_arl_list.append(min(out_of_control['Point Index']))
@@ -70,7 +70,7 @@ def MainExperimentShewhart(delta, k, miu, sigma, n, m):
         results['Delta'].append(d)
         results['Empirical ARL'].append(np.average(empirical_arl_list))
         results['Theoretical ARL'].append(theoretical_arl)
-        results['Standard Deviation'].append(np.average(standard_dev_list))
+        results['Theoretical RL Stdev'].append(theoretical_stdev)
     
     results= pd.DataFrame(results)
     
