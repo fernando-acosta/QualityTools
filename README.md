@@ -1,5 +1,5 @@
 # QualityTools
- Quality tools is a framework for statistical process control using python. You will find a modlular repository that will help you for your analysis in taks like: calculating control limits and visualizing a process across time to ensure that your process is under control.
+ Quality tools is a framework for statistical process control using python. You will find a modlular repository that will help you for your analysis in tasks like: calculating control limits and visualizing a process across time to ensure that your process is under control.
  
  ## What can you do?
  
@@ -10,7 +10,7 @@
  
  ## A simple example using an EWMA Control Model
  
- The following code block generates a set of 200 points, and it returns a dataframe with the points that are out of control and it plots the series with the limits. 
+ The following code block generates a set of 500 points, and it returns a dataframe with the points that are out of control and a ploted control chart. 
    
    ```
    from ControlCharts import EWMAControlModel
