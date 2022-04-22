@@ -12,6 +12,7 @@
  
  The following code block generates a set of 200 points, and it returns a dataframe with the points that are out of control and it plots the series with the limits. 
    
+   ```
    from ControlCharts import EWMAControlModel
    import numpy as np
    
@@ -20,6 +21,7 @@
    model.fit(10000, miu=48, sigma=0.50)
    ooc= model.predict(x)
    model.plot(x, ss=True)
+   ```
 
 ### Results
   
