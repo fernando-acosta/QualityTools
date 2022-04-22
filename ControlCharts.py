@@ -233,12 +233,20 @@ class EWMAControlModel:
             plt.ylabel('Data Point')
             plt.show()
             plt.close()
-            
-# x= np.random.normal(loc=48, scale= 0.50, size= (10000,))
-# model= EWMAControlModel(l=3, lbd=0.10)
-# model.fit(10000, miu=48, sigma=0.50)
-# ooc= model.predict(x)
-# model.plot(x, ss=True)
+
+size= 250
+miu_train= 48
+miu_test= 48.50
+sigma= 0.50
+
+x_train= np.random.normal(loc=miu_train, scale= sigma, size= (size,))
+x_test= np.random.normal(loc=miu_test, scale= sigma, size= (size,))
+model= ShewhartControlModel(k=3)
+model.fit(miu=miu_train, sigma=sigma)
+
+combined_data= np.append(x_train, x_test)
+ooc= model.predict(combined_data)
+model.plot(combined_data)
             
 
 
