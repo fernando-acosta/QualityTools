@@ -13,7 +13,7 @@
  The following code block generates a set of 500 points, and it returns a dataframe with the points that are out of control and a ploted control chart. 
    
    ```
-   from ControlCharts import EWMAControlModel
+   from ControlCharts import ShewhartControlModel
    import numpy as np
    
    # Step 1: Set the Parameters
