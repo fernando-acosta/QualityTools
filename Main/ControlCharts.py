@@ -20,7 +20,8 @@ class ShewhartControlModel:
 
         Parameters
         ----------
-        k : How many standard deviation should the control limmits be. 
+        k : integer type
+            How many standard deviation should the control limmits be. 
 
         Returns
         -------
@@ -29,7 +30,7 @@ class ShewhartControlModel:
         """
         self.k= k
     
-    def fit(self, miu, sigma):
+    def fit(self, x, miu= None, sigma= None):
         """
         
         Description:
@@ -44,17 +45,38 @@ class ShewhartControlModel:
         Parameters:
         ----------
         
-        miu : Population Mean
+        miu : float or integer type 
+            Population Mean
         
-        sigma : Population Standard Deviation
+        sigma : float or integer type 
+            Population Standard Deviation
 
         Returns
         -------
         
-        ucl: upper control limit
-        lcl: lower control limit
+        ucl: float or integer type 
+            upper control limit
+            
+        lcl:float or integer type 
+            lower control limit
 
         """
+        
+        # If user does not provide miu, estimate miu from the data
+        if miu==None:
+            miu= np.average(x)
+            
+        # If user does not provide sigma, estimate from the data
+        n= len(x)
+        if sigma== None:
+            if n<=25:
+                qcc= pd.read_csv('BiasControlConstants/quality_control_constants.csv')
+                c4= qcc['c4'].loc[n-2]
+                sigma= (np.std(x)*c4)/np.sqrt(n)
+            else:
+                sigma= (np.std(x))/np.sqrt(n)
+        
+        # Estimate control limits
         self.ucl= miu + self.k*sigma
         self.cl= miu
         self.lcl= miu - self.k*sigma
@@ -72,12 +94,14 @@ class ShewhartControlModel:
         
         Parameters
         ----------
-        x : Vector containing quality characteristic data
+        x : numpy array
+            Vector containing quality characteristic data
 
         Returns
         -------
         
-        output_df: A dataframe with the points that are out of control in the vector x, and their respective index.
+        output_df: pandas dataframe
+            A dataframe with the points that are out of control in the vector x, and their respective index.
 
         """
         
@@ -90,14 +114,15 @@ class ShewhartControlModel:
         
         return output_df
     
-    def plot(self, x):
+    def plot(self, x, dpi):
         """
         
         The purpose of this function is to visualize the points taht are out of control. It plots the control chart. 
 
         Parameters
         ----------
-        x : A vector containing the quality characteristc data
+        x : numpy array
+            A vector containing the quality characteristc data
 
         Returns
         -------
@@ -105,7 +130,7 @@ class ShewhartControlModel:
 
         """
         
-        plt.figure(dpi=500)
+        plt.figure(dpi=dpi)
         plt.plot(x)
         plt.plot(np.full(shape= (len(x),), fill_value= self.ucl), color= 'orange')
         plt.plot(np.full(shape= (len(x),), fill_value= self.cl), color= 'black', linestyle= 'dashed')
@@ -130,12 +155,16 @@ class EWMAControlModel:
 
         Parameters
         ----------
-        x : A vector containing the quality characteristc data
+        x : numpy array
+            A vector containing the quality characteristc data
 
         Returns
         -------
-        ucl: Upper control limit
-        lcl: Lower control limit
+        ucl: float or integer type 
+            Upper control limit
+            
+        lcl: float or integer type 
+            Lower control limit
 
         """
     
@@ -166,12 +195,14 @@ class EWMAControlModel:
         
         Parameters
         ----------
-        x : Vector containing quality characteristic data
+        x : numpy array
+            Vector containing quality characteristic data
 
         Returns
         -------
         
-        output_df: A dataframe with the points that are out of control in the vector x, and their respective index.
+        output_df: pandas dataframe
+            A dataframe with the points that are out of control in the vector x, and their respective index.
 
         """
         # Part 1: Calculate Z, to be able to plot it
@@ -199,7 +230,8 @@ class EWMAControlModel:
 
         Parameters
         ----------
-        x : A vector containing the quality characteristc data
+        x : numpy array
+            A vector containing the quality characteristc data
 
         Returns
         -------
@@ -233,20 +265,6 @@ class EWMAControlModel:
             plt.ylabel('Data Point')
             plt.show()
             plt.close()
-
-size= 250
-miu_train= 48
-miu_test= 48.50
-sigma= 0.50
-
-x_train= np.random.normal(loc=miu_train, scale= sigma, size= (size,))
-x_test= np.random.normal(loc=miu_test, scale= sigma, size= (size,))
-model= ShewhartControlModel(k=3)
-model.fit(miu=miu_train, sigma=sigma)
-
-combined_data= np.append(x_train, x_test)
-ooc= model.predict(combined_data)
-model.plot(combined_data)
             
 
 
