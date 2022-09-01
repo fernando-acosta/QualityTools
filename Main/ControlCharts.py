@@ -126,11 +126,11 @@ class ShewhartControlModel:
 
         Returns
         -------
-        None.
+        fig: matplotlib object.
 
         """
         
-        plt.figure(dpi=dpi)
+        fig= plt.figure(dpi=dpi)
         plt.plot(x)
         plt.plot(np.full(shape= (len(x),), fill_value= self.ucl), color= 'orange')
         plt.plot(np.full(shape= (len(x),), fill_value= self.cl), color= 'black', linestyle= 'dashed')
@@ -139,6 +139,8 @@ class ShewhartControlModel:
         plt.ylabel('Data Point')
         plt.show()
         plt.close()
+        
+        return fig
         
 class EWMAControlModel:
     
