@@ -40,7 +40,7 @@
   
   #### Time Series Plot
   <p align="center">
-  <img src="https://github.com/fernando-acosta/QualityTools/Main/Examples/TimeSeriesExample1.png" />
+  <img src="https://github.com/fernando-acosta/QualityTools/blob/main/Main/Examples/TimeSeriesExample1.png" />
   </p>
   
   #### Out of Control Output
