@@ -42,11 +42,6 @@
   <p align="center">
   <img src="https://github.com/fernando-acosta/QualityTools/blob/main/Main/Examples/TimeSeriesExample1.png" />
   </p>
-  
-  #### Out of Control Output
-  <p align="center">
-  <img src="https://github.com/fernando-acosta/QualityTools/blob/main/Examples/OutofControlExample1.PNG" />
-  </p>
 
 
  
